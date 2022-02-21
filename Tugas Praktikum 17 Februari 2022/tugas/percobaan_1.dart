@@ -1,64 +1,64 @@
-// Tipe Data Dynamic LIST
 import 'dart:io';
 
-void dinamis() {
-  List<dynamic> data = <dynamic>[];
-  data.add("Udin");
-  data.add(90);
-  data.add('A');
-  data.add(true);
-  data.add(30.73);
+void statis() {
+  Map data = {
+    0: {
+      "nim": "09030015",
+      "nama": "Udin",
+      "matkul": <int, String>{
+        0: "PW",
+        1: "PBO",
+        2: "PPB",
+      }
+    },
+    1: {
+      "nim": "09030016",
+      "nama": "Joko",
+      "matkul": <int, String>{
+        0: "Basdat",
+        1: "RPL",
+      }
+    },
+  };
 
-  // print(data);
-
-  List<dynamic> data2 = [
-    'Udin',
-    {'jalan' : 'Sudirman', 'no': '80'},
-  ];
-
-  stdout.write("Masukan nama jalan : ");
-  String? nama = stdin.readLineSync();
-  stdout.write("Masukan nomer jalan : ");
-  int? nomer = int.parse(stdin.readLineSync()!);
-
-  data2.add({'jalan': nama, 'no': nomer});
-
-  print("Nama : " + data2[0]);
-  print("Jalan : " + data2[1]['jalan']);
-  print("Nomer : " + data2[1]['no']);
-  print("----------------------");
-  print("Jalan : " + data2[2]['jalan']);
-  print("Nomer : " + data2[2]['no'].toString());
+  print(data);
 }
 
-// Tipe Data Dynamic SET
-// void listis() {
-//   Set<dynamic> data = {"Udin", 90, 'A', true, 30.73};
-// }
+void dinamis() {
+  List<dynamic> namaMatkul =  <dynamic>[];
+  var dataMahasiswa = new Map();
 
-// Tipe Data Num
-// void number() {
-//   List<num> data = <num>[];
-//   data.add("Udin");
-//   data.add(90);
-//   data.add('A');
-//   data.add(true);
-//   data.add(30.73);
+  stdout.write("Masukan Jumlah Mahasiswa : ");
+  int? jumlahMahasiswa = int.parse(stdin.readLineSync()!);
 
-//   print(data);
-// }
+  String? nim;
+  String? nama;
+  
+  for(int i = 0; i < jumlahMahasiswa; i++) {
+    stdout.write("Masukan NIM : ");
+    nim = stdin.readLineSync();
+    stdout.write("Masukan Nama : ");
+    nama = stdin.readLineSync();
+    stdout.write("Masukan Jumlah Mata Kuliah : ");
+    int? jumlahMataKuliah = int.parse(stdin.readLineSync()!);
 
-// Tipe Data Var
-// void variable() {
-//   List<var> data = <var>[];
-//   data.add("Udin");
-//   data.add(90);
-//   data.add('A');
-//   data.add(true);
-//   data.add(30.73);
+    for(int j = 0; j < jumlahMataKuliah; j++) {
+      stdout.write("Masukan Mata Kuliah : ");
+      namaMatkul.add({stdin.readLineSync()});
+    }
+    print("--------------------------------");
+  
+    dataMahasiswa[i] = {
+      'nim': nim,
+      'nama': nama,
+      'matkul': namaMatkul,
+    };
 
-//   print(data);
-// }
+    print("--------------------------------");
+  }
+
+  print(dataMahasiswa);
+}
 
 void main() {
   dinamis();
