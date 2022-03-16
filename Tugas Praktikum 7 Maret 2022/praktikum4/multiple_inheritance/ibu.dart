@@ -1,0 +1,3 @@
+class Ibu {
+  void memasak() {}
+}
