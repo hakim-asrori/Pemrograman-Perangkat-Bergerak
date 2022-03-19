@@ -18,7 +18,7 @@ class Peminjaman {
   String? _noPinjaman;
   Petugas? _petugas;
   Mahasiswa? _mahasiswa;
-  List<Map> _buku = <Map>[];
+  Set<Buku> _buku = Set<Buku>();
 
   Peminjaman(this._petugas, this._mahasiswa) {
     counterPeminjaman++;
@@ -30,7 +30,7 @@ class Peminjaman {
   Mahasiswa get mahasiswa => _mahasiswa!;
 
   void addBuku(Buku buku) {
-    _buku.add({'judul': buku.judul, 'jumlahBuku': 1});
+    _buku.add(buku);
   }
 
   dynamic getBuku() {

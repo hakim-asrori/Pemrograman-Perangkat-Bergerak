@@ -1,11 +1,9 @@
 import 'peminjaman.dart';
 
 class Pengembalian {
-  var _peminjaman = new Map();
+  Peminjaman? _peminjaman;
 
   Pengembalian(this._peminjaman);
 
-  dynamic getPeminjaman() {
-    return _peminjaman;
-  }
+  Peminjaman get peminjaman => _peminjaman!;
 }

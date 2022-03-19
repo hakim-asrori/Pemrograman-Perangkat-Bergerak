@@ -9,8 +9,9 @@ class Transaksi {
   Operator? _operator;
   Customer? _customer;
 
-  Transaksi(this._customer){
+  Transaksi(String idCustomer, String nama){
     _nomor++;
+    _customer = Customer(idCustomer, nama);
   }
 
   void addPizza(Pizza pizza, int qty) {
