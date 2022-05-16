@@ -67,10 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: EdgeInsets.all(5),
                             height: 120,
                             width: 120,
-                            // child: Image.asset(
-                            //   'assets/mpm.png', 
-                            //   fit: BoxFit.cover
-                            // ),
                             child: Image.network(
                               snapshot.data[index]['image'],
                               fit: BoxFit.cover,
@@ -111,12 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Author successfully deleted!")));
                                           });
                                         },)
-                                        // GestureDetector(child: Icon(Icons.delete), onTap: () {
-                                        //   // print("Ok");
-                                        //   setState(() {
-                                        //     deleteAuthors(snapshot.data[index]['id'].toString());
-                                        //   });
-                                        // },),
                                       ],
                                     ),
                                     Text(snapshot.data[index]['created_at']),
