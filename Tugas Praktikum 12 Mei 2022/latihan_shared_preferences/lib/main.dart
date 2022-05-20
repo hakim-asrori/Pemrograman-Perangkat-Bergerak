@@ -10,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   bool? loggedIn;
 
-  void getPrefs() async {
+  Future<void> getPrefs() async {
     var prefs = await SharedPreferences.getInstance();
 
     loggedIn = prefs.getBool('isLoggedIn');
