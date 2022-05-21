@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_setup/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({Key? key}) : super(key: key);
@@ -12,12 +14,13 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _githubController = TextEditingController();
-  TextEditingController _twitterController = TextEditingController();
-  TextEditingController _articleController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _githubController = TextEditingController();
+  final _twitterController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _birthdayController = TextEditingController();
+  final _locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +68,27 @@ class _CreateScreenState extends State<CreateScreen> {
       },
     );
 
-    final article = TextFormField(
-      controller: _articleController,
-      decoration: InputDecoration(labelText: "Latest Article Publish"),
+    final age = TextFormField(
+      controller: _ageController,
+      decoration: InputDecoration(labelText: "Age"),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "Please enter latest article published";
+          return "Please enter age";
         }
         return null;
+      },
+    );
+
+    final birthday = DateTimeField(
+      controller: _birthdayController,
+      decoration: InputDecoration(labelText: "Birthday"),
+      format: DateFormat('yyyy-MM-dd'),
+      onShowPicker: (BuildContext context, DateTime? currentValue) {
+        return showDatePicker(
+            context: context,
+            initialDate: currentValue ?? DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2100));
       },
     );
 
@@ -114,7 +130,8 @@ class _CreateScreenState extends State<CreateScreen> {
                 email,
                 github,
                 twitter,
-                article,
+                age,
+                birthday,
                 location,
                 SizedBox(
                   height: 20.0,
@@ -133,7 +150,8 @@ class _CreateScreenState extends State<CreateScreen> {
       email: _emailController.text,
       github: _githubController.text,
       twitter: _twitterController.text,
-      latest_article_published: _articleController.text,
+      age: _ageController.text,
+      birthday: DateTime.parse(_birthdayController.text),
       location: _locationController.text,
     );
 
@@ -149,17 +167,19 @@ class Author {
   String? email;
   String? github;
   String? twitter;
-  String? latest_article_published;
+  String? age;
+  DateTime? birthday;
   String? location;
 
   Author({
     this.id = "",
-    required this.name,
-    required this.email,
-    required this.github,
-    required this.twitter,
-    required this.latest_article_published,
-    required this.location,
+    this.name,
+    this.email,
+    this.github,
+    this.twitter,
+    this.age,
+    this.birthday,
+    this.location,
   });
 
   Map<String, dynamic> toJson() => {
@@ -168,15 +188,19 @@ class Author {
         'email': email,
         'github': github,
         'twitter': twitter,
-        'latest_article_published': latest_article_published,
+        'age': age,
+        'birthday': birthday,
         'location': location,
       };
 
   static Author fromJson(Map<String, dynamic> json) => Author(
-      name: json['id'],
-      email: json['email'],
-      github: json['github'],
-      twitter: json['github'],
-      latest_article_published: json['latest_article_published'],
-      location: json['location']);
+        id: json['id'],
+        name: json['name'],
+        email: json['email'],
+        github: json['github'],
+        twitter: json['twitter'],
+        age: json['age'],
+        birthday: (json['birthday'] as Timestamp).toDate(),
+        location: json['location'],
+      );
 }

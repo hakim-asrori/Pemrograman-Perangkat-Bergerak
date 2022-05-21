@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_setup/screens/authors/create_screen.dart';
+import 'package:firebase_setup/screens/authors/detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,16 +11,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Stream<List<Author>> readAuthors() => FirebaseFirestore.instance
-      .collection('authors')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Author.fromJson(doc.data())).toList());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Authors'),
       ),
       floatingActionButton: FloatingActionButton(
@@ -29,34 +25,51 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: ((context) => CreateScreen())));
         },
       ),
-      resizeToAvoidBottomInset: false,
-      body: StreamBuilder(
+      body: StreamBuilder<List<Author>>(
         stream: readAuthors(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text('Error'),)
+            return Center(
+              child: Text('Error'),
+            );
           } else if (snapshot.hasData) {
-            final authors = snapshot.data;
+            final authors = snapshot.data!;
 
+            // print(authors);
             return ListView(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(child: Text('${authors}')),
-                )
-              ],
+              children: authors.map(buildAuthor).toList(),
             );
           } else {
-            return Center(child: CircularProgressIndicator(),)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
-
-          return Center();
         },
       ),
     );
   }
 
-  Widget buildAuthor(Author author) => ListTile(
-        leading: CircleAvatar(child: Text('${author.email}')),
-        title: Text('${author.name}'),
-      );
+  Stream<List<Author>> readAuthors() => FirebaseFirestore.instance
+      .collection('authors')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Author.fromJson(doc.data())).toList());
+
+  Widget buildAuthor(Author author) {
+    return ListTile(
+      leading: CircleAvatar(child: Text(author.age.toString())),
+      title: Text(author.name.toString()),
+      subtitle: Text(author.email.toString()),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailScreen(
+              id: author.id.toString(),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
