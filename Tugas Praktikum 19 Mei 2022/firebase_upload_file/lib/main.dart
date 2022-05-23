@@ -45,28 +45,30 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Center(
-              child: ElevatedButton(
-                  onPressed: () async {
-                    final results = await FilePicker.platform.pickFiles(
-                        allowCompression: false,
-                        type: FileType.custom,
-                        allowedExtensions: ['png', 'jpg']);
+            child: ElevatedButton(
+              onPressed: () async {
+                final results = await FilePicker.platform.pickFiles(
+                    allowCompression: false,
+                    type: FileType.custom,
+                    allowedExtensions: ['png', 'jpg']);
 
-                    if (results == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('No file selected.')));
+                if (results == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No file selected.')));
 
-                      return null;
-                    }
+                  return null;
+                }
 
-                    final path = results.files.single.path!;
-                    final fileName = results.files.single.name;
+                final path = results.files.single.path!;
+                final fileName = results.files.single.name;
 
-                    storage
-                        .uploadFile(path, fileName)
-                        .then((value) => print('Done'));
-                  },
-                  child: Text('Upload File'))),
+                storage
+                    .uploadFile(path, fileName)
+                    .then((value) => print('Done'));
+              },
+              child: Text('Upload File'),
+            ),
+          ),
           FutureBuilder(
               future: storage.listFiles(),
               builder: (BuildContext context,
@@ -74,13 +76,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.hasData) {
                   return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    height: 100,
                     child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
                         itemCount: snapshot.data!.items.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ElevatedButton(
                               onPressed: () {},
                               child: Text(snapshot.data!.items[index].name));
                         }),
+                  );
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    !snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                return Container();
+              }),
+          FutureBuilder(
+              future: storage.downloadURL('IMG-20220522-WA0032.jpg'),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  return Container(
+                    height: 250,
+                    width: 300,
+                    child: Image.network(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
                   );
                 }
 
