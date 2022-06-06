@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Container();
               }),
           FutureBuilder(
-              future: storage.downloadURL('IMG-20220522-WA0032.jpg'),
+              future: storage.downloadURL('keyboard.jpg'),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.hasData) {

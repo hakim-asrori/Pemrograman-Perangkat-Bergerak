@@ -98,15 +98,9 @@ class _SignupPageState extends State<SignupPage> {
                   child: GestureDetector(
                       onTap: () async {
                         _register();
-                        if (_success == true) {
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text("Your account successfully added!")));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Your account fail to added!")));
-                        }
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Your account successfully added!")));
                       },
                       child: Center(
                           child: Text('SIGNUP',
